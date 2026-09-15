@@ -1,0 +1,53 @@
+@use './tokens';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-primary);
+}
+
+body {
+  margin: 0;
+  background: var(--color-background-subtle);
+  color: var(--color-text-primary);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h1 {
+  font-family: var(--font-heading-1-family);
+  font-size: var(--font-heading-1-size);
+  font-weight: var(--font-heading-1-weight);
+}
+
+h2 {
+  font-family: var(--font-heading-2-family);
+  font-size: var(--font-heading-2-size);
+  font-weight: var(--font-heading-2-weight);
+}
+
+h3 {
+  font-family: var(--font-heading-3-family);
+  font-size: var(--font-heading-3-size);
+  font-weight: var(--font-heading-3-weight);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}

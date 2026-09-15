@@ -1,0 +1,26 @@
+@use '../../../../styles/breakpoints';
+
+.cardHeader {
+  margin-bottom: var(--space-4);
+}
+
+.customerDetails {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.customerDetails dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-sm-size);
+}
+
+.customerDetails dd {
+  margin: var(--space-1) 0 0;
+}
+
+@include breakpoints.breakpoint-up(md) {
+  .customerDetails {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

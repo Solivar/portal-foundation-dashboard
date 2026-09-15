@@ -1,0 +1,70 @@
+.cardHeader {
+  margin-bottom: var(--space-4);
+}
+
+.notificationList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+}
+
+.read {
+  background: var(--color-background-notification-read);
+}
+
+.unread {
+  background: var(--color-background-notification-unread);
+  font-weight: var(--font-weight-medium);
+}
+
+.notificationContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.notificationIndicator {
+  flex: 0 0 auto;
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-pill);
+}
+
+.unreadIndicator {
+  background: var(--color-status-info);
+}
+
+.readIndicator {
+  background: var(--color-icon-secondary);
+}
+
+.unreadFlag,
+.readFlag {
+  flex: 0 0 auto;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width-thin) solid;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-body-sm-size);
+}
+
+.unreadFlag {
+  border-color: var(--color-border-feedback-info);
+  background: var(--color-background-surface);
+  color: var(--color-text-feedback-info);
+}
+
+.readFlag {
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-secondary);
+}
