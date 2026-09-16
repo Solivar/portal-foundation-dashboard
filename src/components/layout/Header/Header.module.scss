@@ -1,0 +1,12 @@
+.header {
+  position: relative;
+  z-index: 1;
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  background: var(--color-background-surface);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) var(--space-5);
+}

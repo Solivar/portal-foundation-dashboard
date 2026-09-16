@@ -1,4 +1,4 @@
-import type { Notification } from '../features/dashboard/dashboard.types';
+import type { Notification } from '../types/notification';
 
 export const notificationMocks: Notification[] = [
   { id: 'notification-1', message: 'Ticket TCK-1042 was updated.', unread: true },

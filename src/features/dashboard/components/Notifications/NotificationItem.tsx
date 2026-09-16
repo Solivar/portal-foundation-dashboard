@@ -1,4 +1,4 @@
-import type { Notification } from '../../dashboard.types';
+import type { Notification } from '../../../../types/notification';
 import styles from './Notifications.module.scss';
 
 type NotificationItemProps = {

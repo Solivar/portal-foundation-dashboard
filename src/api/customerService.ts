@@ -1,4 +1,4 @@
-import type { Customer } from '../features/dashboard/dashboard.types';
+import type { Customer } from '../types/customer';
 import { customerMock } from '../mocks/customerMock';
 import { delay } from './delay';
 

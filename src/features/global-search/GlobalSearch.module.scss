@@ -1,0 +1,101 @@
+.search {
+  position: relative;
+  width: min(100%, 42rem);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-7) var(--space-3) var(--space-4);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-control);
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  display: flex;
+  color: var(--color-icon-secondary);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.searchIcon svg {
+  display: block;
+  width: var(--space-5);
+  height: var(--space-5);
+  fill: currentColor;
+}
+
+.resultsPanel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  left: 0;
+  max-height: min(28rem, calc(100vh - 8rem));
+  overflow-y: auto;
+  padding: var(--space-3);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-background-surface);
+  box-shadow: var(--elevation-popover);
+}
+
+.statusMessage {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-sm-size);
+}
+
+.resultGroups {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.resultGroup {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.groupTitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-label-small-size);
+  font-weight: var(--font-label-small-weight);
+}
+
+.resultList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resultItem {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+  background: var(--color-background-subtle);
+  color: var(--color-text-primary);
+}
+
+.resultTitle {
+  font-weight: var(--font-weight-medium);
+}
+
+.resultMeta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-sm-size);
+}

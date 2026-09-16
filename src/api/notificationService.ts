@@ -1,4 +1,4 @@
-import type { Notification } from '../features/dashboard/dashboard.types';
+import type { Notification } from '../types/notification';
 import { notificationMocks } from '../mocks/notificationMocks';
 import { delay } from './delay';
 

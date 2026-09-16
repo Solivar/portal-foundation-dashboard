@@ -1,4 +1,4 @@
-import type { Order } from '../features/dashboard/dashboard.types';
+import type { Order } from '../types/order';
 import { orderMocks } from '../mocks/orderMocks';
 import { delay } from './delay';
 

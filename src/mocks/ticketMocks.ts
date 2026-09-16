@@ -1,4 +1,4 @@
-import type { ServiceTicket } from '../features/dashboard/dashboard.types';
+import type { ServiceTicket } from '../types/supportTicket';
 
 export const ticketMocks: ServiceTicket[] = [
   { id: 'TCK-1042', status: 'In progress', priority: 'High' },

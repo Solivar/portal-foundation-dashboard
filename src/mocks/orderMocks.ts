@@ -1,4 +1,4 @@
-import type { Order } from '../features/dashboard/dashboard.types';
+import type { Order } from '../types/order';
 
 export const orderMocks: Order[] = [
   { number: 'ORD-7821', total: '€1,240.00', shipmentStatus: 'Shipped' },

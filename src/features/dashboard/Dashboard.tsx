@@ -9,7 +9,7 @@ import styles from './Dashboard.module.scss';
 
 export function Dashboard() {
   return (
-    <main className={styles.dashboard}>
+    <main className={styles.dashboard} id="main-content" tabIndex={-1}>
       <h1 className={styles.dashboardTitle}>Dashboard</h1>
 
       <Grid>

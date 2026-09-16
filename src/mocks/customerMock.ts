@@ -1,4 +1,4 @@
-import type { Customer } from '../features/dashboard/dashboard.types';
+import type { Customer } from '../types/customer';
 
 export const customerMock: Customer = {
   name: 'Alex Morgan',
