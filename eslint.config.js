@@ -25,4 +25,13 @@ export default defineConfig([
       },
     },
   },
+  {
+    files: ['**/*.test.{ts,tsx}', 'src/test/**/*.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.vitest,
+      },
+    },
+  },
 ]);
