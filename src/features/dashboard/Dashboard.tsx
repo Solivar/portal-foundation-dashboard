@@ -1,3 +1,4 @@
+import { Grid, GridItem } from '../../components/ui/Grid';
 import { CustomerInformation } from './components/CustomerInformation';
 import { Notifications } from './components/Notifications';
 import { RecentOrders } from './components/RecentOrders';
@@ -8,23 +9,23 @@ export function Dashboard() {
   return (
     <main className={styles.dashboard}>
       <h1 className={styles.dashboardTitle}>Dashboard</h1>
-      <div className={styles.dashboardGrid}>
-        <section className={styles.colSpanFull}>
+      <Grid>
+        <GridItem span={12} as="section">
           <CustomerInformation />
-        </section>
+        </GridItem>
 
-        <section className={styles.colSpan6}>
+        <GridItem span={6} as="section">
           <ServiceTickets />
-        </section>
+        </GridItem>
 
-        <section className={styles.colSpan6}>
+        <GridItem span={6} as="section">
           <RecentOrders />
-        </section>
+        </GridItem>
 
-        <section className={styles.colSpanFull}>
+        <GridItem span={12} as="section">
           <Notifications />
-        </section>
-      </div>
+        </GridItem>
+      </Grid>
     </main>
   );
 }

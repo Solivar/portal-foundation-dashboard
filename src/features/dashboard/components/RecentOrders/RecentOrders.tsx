@@ -1,28 +1,10 @@
-import { useEffect, useState } from 'react';
 import { getOrders } from '../../../../api/orderService';
 import { Card } from '../../../../components/ui/Card';
-import type { AsyncState, Order } from '../../dashboard.types';
+import { useAsyncData } from '../../../../hooks/useAsyncData';
 import styles from './RecentOrders.module.scss';
 
 export function RecentOrders() {
-  const [state, setState] = useState<AsyncState<Order[]>>({ status: 'loading' });
-
-  useEffect(() => {
-    let isActive = true;
-
-    getOrders().then(
-      (orders) => {
-        if (isActive) setState({ status: 'success', data: orders });
-      },
-      () => {
-        if (isActive) setState({ status: 'error' });
-      },
-    );
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const state = useAsyncData(getOrders);
 
   return (
     <Card>

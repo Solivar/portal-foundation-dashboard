@@ -21,6 +21,3 @@ export type Notification = {
   message: string;
   unread: boolean;
 };
-
-export type AsyncState<T> =
-  { status: 'loading' } | { status: 'success'; data: T } | { status: 'error' };

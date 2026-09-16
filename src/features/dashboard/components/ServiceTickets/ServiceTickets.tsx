@@ -1,28 +1,10 @@
-import { useEffect, useState } from 'react';
 import { getTickets } from '../../../../api/ticketService';
 import { Card } from '../../../../components/ui/Card';
-import type { AsyncState, ServiceTicket } from '../../dashboard.types';
+import { useAsyncData } from '../../../../hooks/useAsyncData';
 import styles from './ServiceTickets.module.scss';
 
 export function ServiceTickets() {
-  const [state, setState] = useState<AsyncState<ServiceTicket[]>>({ status: 'loading' });
-
-  useEffect(() => {
-    let isActive = true;
-
-    getTickets().then(
-      (tickets) => {
-        if (isActive) setState({ status: 'success', data: tickets });
-      },
-      () => {
-        if (isActive) setState({ status: 'error' });
-      },
-    );
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const state = useAsyncData(getTickets);
 
   return (
     <Card>

@@ -12,3 +12,10 @@ entrypoint with `@use './styles/tokens'`.
 
 Spacing, radius, and typography tokens use `rem` to support resizable text and
 UI elements.
+
+The layout grid from the design system is represented by the reusable `Grid`
+component in `src/components/ui/Grid`. It uses a 12-column foundation with the
+shared spacing tokens for column gaps and supports the documented `Col-12`,
+`Col-6`, and `Col-4` patterns through constrained `span` values. Grid items
+stack full-width on small screens and apply their documented column spans from
+the shared `md` breakpoint upward.

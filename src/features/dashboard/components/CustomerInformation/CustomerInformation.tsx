@@ -1,28 +1,10 @@
-import { useEffect, useState } from 'react';
 import { getCustomer } from '../../../../api/customerService';
 import { Card } from '../../../../components/ui/Card';
-import type { AsyncState, Customer } from '../../dashboard.types';
+import { useAsyncData } from '../../../../hooks/useAsyncData';
 import styles from './CustomerInformation.module.scss';
 
 export function CustomerInformation() {
-  const [state, setState] = useState<AsyncState<Customer>>({ status: 'loading' });
-
-  useEffect(() => {
-    let isActive = true;
-
-    getCustomer().then(
-      (customer) => {
-        if (isActive) setState({ status: 'success', data: customer });
-      },
-      () => {
-        if (isActive) setState({ status: 'error' });
-      },
-    );
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const state = useAsyncData(getCustomer);
 
   return (
     <Card>
