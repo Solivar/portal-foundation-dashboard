@@ -93,6 +93,7 @@ export function GlobalSearch() {
           aria-live="polite"
           className={styles.resultsPanel}
           id={resultsId}
+          tabIndex={0}
         >
           {state.status === 'idle' && (
             <p className={styles.statusMessage}>Start typing and results will appear here.</p>

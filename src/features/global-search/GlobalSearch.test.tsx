@@ -231,6 +231,17 @@ describe('panel visibility', () => {
     expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
   });
 
+  test('allows keyboard focus to move from the input into the panel', () => {
+    render(<GlobalSearch />);
+    focusSearch();
+    const panel = screen.getByRole('region', { name: 'Search results' });
+
+    act(() => panel.focus());
+
+    expect(panel).toHaveFocus();
+    expect(panel).toBeInTheDocument();
+  });
+
   test('keeps the panel open when the user presses a search result', async () => {
     vi.mocked(searchProducts).mockResolvedValue([
       { id: 'PRD-1002', name: 'Cloud Backup Essentials', category: 'Cloud services' },
