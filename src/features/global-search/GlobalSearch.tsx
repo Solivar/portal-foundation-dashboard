@@ -1,12 +1,22 @@
-import { type ChangeEvent, type FocusEvent, type SubmitEvent, useId, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FocusEvent,
+  type KeyboardEvent,
+  type SubmitEvent,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import { SearchIcon } from '../../components/icons/SearchIcon';
+import { ErrorBoundary } from '../../components/ui/ErrorBoundary';
 import { SearchResults } from './SearchResults';
 import { useGlobalSearch } from './useGlobalSearch';
 import styles from './GlobalSearch.module.scss';
 
 export function GlobalSearch() {
   const [query, setQuery] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const resultsId = useId();
   const state = useGlobalSearch(query);
 
@@ -16,11 +26,20 @@ export function GlobalSearch() {
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setQuery(event.target.value);
+    setIsOpen(true);
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLFormElement>) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      inputRef.current?.focus();
+      setIsOpen(false);
+    }
   }
 
   function handleBlur(event: FocusEvent<HTMLFormElement>) {
     if (!event.currentTarget.contains(event.relatedTarget)) {
-      setIsFocused(false);
+      setIsOpen(false);
     }
   }
 
@@ -29,7 +48,8 @@ export function GlobalSearch() {
       className={styles.search}
       role="search"
       onBlur={handleBlur}
-      onFocus={() => setIsFocused(true)}
+      onFocus={() => setIsOpen(true)}
+      onKeyDown={handleKeyDown}
       onSubmit={handleSubmit}
     >
       <div className={styles.inputWrapper}>
@@ -40,6 +60,7 @@ export function GlobalSearch() {
           id="global-search"
           onChange={handleChange}
           placeholder="Search products, articles, and tickets"
+          ref={inputRef}
           type="search"
           value={query}
         />
@@ -47,8 +68,13 @@ export function GlobalSearch() {
           <SearchIcon />
         </span>
       </div>
-      {isFocused && (
-        <div aria-live="polite" className={styles.resultsPanel} id={resultsId}>
+      {isOpen && (
+        <section
+          aria-label="Search results"
+          aria-live="polite"
+          className={styles.resultsPanel}
+          id={resultsId}
+        >
           {state.status === 'idle' && (
             <p className={styles.statusMessage}>Search products, articles, and tickets.</p>
           )}
@@ -58,8 +84,18 @@ export function GlobalSearch() {
               Unable to complete search.
             </p>
           )}
-          {state.status === 'success' && <SearchResults results={state.data} />}
-        </div>
+          {state.status === 'success' && (
+            <ErrorBoundary
+              fallback={
+                <p className={styles.statusMessage} role="alert">
+                  Unable to display search results.
+                </p>
+              }
+            >
+              <SearchResults results={state.data} />
+            </ErrorBoundary>
+          )}
+        </section>
       )}
     </form>
   );

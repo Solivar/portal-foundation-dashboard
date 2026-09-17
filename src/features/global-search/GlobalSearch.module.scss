@@ -44,6 +44,7 @@
   left: 0;
   max-height: min(28rem, calc(100vh - 8rem));
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: var(--space-3);
   border: var(--border-width-thin) solid var(--color-border-subtle);
   border-radius: var(--radius-surface);

@@ -85,14 +85,105 @@ afterEach(() => {
 });
 
 describe('panel visibility', () => {
+  test('Escape closes the panel without clearing the query or losing input focus', () => {
+    mockPendingSearches();
+    render(<GlobalSearch />);
+
+    const input = screen.getByLabelText('Global search');
+    act(() => input.focus());
+    typeSearch('cloud');
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+    expect(fireEvent.keyDown(input, { key: 'Escape' })).toBe(false);
+
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('cloud');
+
+    typeSearch('cloud backup');
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+  });
+
+  test('Escape bubbles from the results panel to the form and closes the panel', () => {
+    mockPendingSearches();
+    render(<GlobalSearch />);
+
+    const input = screen.getByLabelText('Global search');
+    act(() => input.focus());
+    typeSearch('cloud');
+
+    const panel = screen.getByRole('region', { name: 'Search results' });
+
+    fireEvent.keyDown(panel, { key: 'Escape' });
+
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('cloud');
+  });
+
+  test('focusing the input again reopens the panel after Escape', () => {
+    render(
+      <>
+        <GlobalSearch />
+        <button type="button">Outside control</button>
+      </>,
+    );
+
+    const input = screen.getByLabelText('Global search');
+    act(() => input.focus());
+    fireEvent.keyDown(input, { key: 'Escape' });
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
+
+    act(() => screen.getByRole('button', { name: 'Outside control' }).focus());
+    act(() => input.focus());
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+  });
+
+  test('other keys do not dismiss the panel or prevent their default behavior', () => {
+    render(<GlobalSearch />);
+    const input = focusSearch();
+
+    expect(fireEvent.keyDown(input, { key: 'ArrowDown' })).toBe(true);
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+  });
+
+  test('pending search completion does not reopen the panel after Escape', async () => {
+    const products = createDeferred<Product[]>();
+    vi.mocked(searchProducts).mockReturnValue(products.promise);
+    vi.mocked(searchKnowledgeArticles).mockResolvedValue([]);
+    vi.mocked(searchTickets).mockResolvedValue([]);
+    render(<GlobalSearch />);
+
+    const input = focusSearch();
+    typeSearch('cloud');
+    advanceDebounce();
+    fireEvent.keyDown(input, { key: 'Escape' });
+
+    await act(async () => {
+      products.resolve([
+        { id: 'PRD-1002', name: 'Cloud Backup Essentials', category: 'Cloud services' },
+      ]);
+      await products.promise;
+    });
+
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('cloud');
+  });
+
   test('shows the idle prompt when the input is focused', () => {
     render(<GlobalSearch />);
 
-    expect(screen.queryByText('Search products, articles, and tickets.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
 
     focusSearch();
 
-    expect(screen.getByText('Search products, articles, and tickets.')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Search results' })).toHaveTextContent(
+      'Search products, articles, and tickets.',
+    );
   });
 
   test('closes the panel when focus leaves the search', () => {
@@ -105,13 +196,13 @@ describe('panel visibility', () => {
 
     const input = focusSearch();
 
-    expect(screen.getByText('Search products, articles, and tickets.')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
 
     fireEvent.blur(input, {
       relatedTarget: screen.getByRole('button', { name: 'Outside control' }),
     });
 
-    expect(screen.queryByText('Search products, articles, and tickets.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
     expect(searchProducts).not.toHaveBeenCalled();
     expect(searchKnowledgeArticles).not.toHaveBeenCalled();
     expect(searchTickets).not.toHaveBeenCalled();
