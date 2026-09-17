@@ -6,7 +6,32 @@
 }
 
 .headerContent {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 42rem) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
+}
+
+.headerContent > :first-child {
+  grid-column: 2;
+}
+
+.notificationTrigger {
+  grid-column: 3;
+  justify-self: end;
+}
+
+@media (max-width: 40rem) {
+  .headerContent {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .headerContent > :first-child {
+    grid-column: 1;
+  }
+
+  .notificationTrigger {
+    grid-column: 2;
+  }
 }

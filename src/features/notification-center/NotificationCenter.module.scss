@@ -1,0 +1,144 @@
+.notificationCenter {
+  position: relative;
+}
+
+.trigger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--space-7);
+  height: var(--space-7);
+  padding: 0;
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-control);
+  background: var(--color-background-surface);
+  color: var(--color-icon-primary);
+  cursor: pointer;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + var(--space-3));
+  right: 0;
+  width: min(22rem, calc(100vw - var(--space-6)));
+  padding: var(--space-4);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-background-surface);
+  box-shadow: var(--elevation-popover);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.panelControls {
+  margin-top: var(--space-4);
+}
+
+.closeButton {
+  display: grid;
+  place-items: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: 0;
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-control);
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.closeButton svg {
+  display: block;
+  width: var(--space-5);
+  height: var(--space-5);
+  fill: currentColor;
+}
+
+.closeButton:hover {
+  background: var(--color-background-secondary-hover);
+}
+
+.statusMessage {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-secondary);
+}
+
+.notificationList {
+  display: grid;
+  gap: var(--space-3);
+  max-height: 22rem;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  list-style: none;
+}
+
+.notificationItem {
+  padding: var(--space-3);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+}
+
+.unreadNotification {
+  background: var(--color-background-notification-unread);
+}
+
+.readNotification {
+  background: var(--color-background-notification-read);
+  color: var(--color-text-secondary);
+}
+
+.notificationMessage {
+  margin: 0;
+}
+
+.unreadNotification .notificationMessage {
+  font-weight: var(--font-weight-medium);
+}
+
+.notificationFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.notificationStatus {
+  font-size: var(--font-body-sm-size);
+}
+
+.trigger:hover {
+  background: var(--color-background-secondary-hover);
+}
+
+.trigger svg {
+  display: block;
+  width: var(--space-5);
+  height: var(--space-5);
+  fill: currentColor;
+}
+
+.badge {
+  position: absolute;
+  top: calc(var(--space-2) * -1);
+  right: calc(var(--space-2) * -1);
+  display: grid;
+  place-items: center;
+  min-width: var(--space-5);
+  height: var(--space-5);
+  padding: 0 var(--space-2);
+  border: var(--border-width-regular) solid var(--color-background-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-counter-background);
+  color: var(--color-counter-text);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}

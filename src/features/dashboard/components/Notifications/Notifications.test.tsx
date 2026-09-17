@@ -1,43 +1,78 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, test, vi } from 'vitest';
-import { getNotifications } from '../../../../api/notificationService';
+import { useNotifications } from '../../../notifications';
 import { Notifications } from './Notifications';
 
-vi.mock('../../../../api/notificationService', () => ({
-  getNotifications: vi.fn(),
+vi.mock('../../../notifications', () => ({
+  useNotifications: vi.fn(),
 }));
 
 beforeEach(() => {
-  vi.mocked(getNotifications).mockReset();
+  vi.mocked(useNotifications).mockReset();
 });
 
-test('renders notifications after loading', async () => {
-  vi.mocked(getNotifications).mockResolvedValue([
-    {
-      id: 'notification-1',
-      message: 'Ticket TCK-1042 was updated.',
-      unread: true,
-    },
-    {
-      id: 'notification-2',
-      message: 'Your support plan was updated.',
-      unread: false,
-    },
-  ]);
+test('renders the loading state', () => {
+  vi.mocked(useNotifications).mockReturnValue({
+    notificationState: { status: 'loading' },
+    unreadCount: 0,
+    markAsRead: vi.fn(),
+  });
 
   render(<Notifications />);
 
   expect(screen.getByText('Loading notifications...')).toBeInTheDocument();
-  expect(await screen.findByText('Ticket TCK-1042 was updated.')).toBeInTheDocument();
-  expect(screen.getByText('Your support plan was updated.')).toBeInTheDocument();
-  expect(screen.getByText('Unread')).toBeInTheDocument();
-  expect(screen.getByText('Read')).toBeInTheDocument();
 });
 
-test('renders an error message when notifications fail to load', async () => {
-  vi.mocked(getNotifications).mockRejectedValue(new Error('Notification service failed'));
+test('renders only the first three unread notifications', () => {
+  vi.mocked(useNotifications).mockReturnValue({
+    notificationState: {
+      status: 'success',
+      data: [
+        { id: 'notification-1', message: 'First unread notification.', unread: true },
+        { id: 'notification-2', message: 'Read notification.', unread: false },
+        { id: 'notification-3', message: 'Second unread notification.', unread: true },
+        { id: 'notification-4', message: 'Third unread notification.', unread: true },
+        { id: 'notification-5', message: 'Fourth unread notification.', unread: true },
+      ],
+    },
+    unreadCount: 4,
+    markAsRead: vi.fn(),
+  });
 
   render(<Notifications />);
 
-  expect(await screen.findByRole('alert')).toHaveTextContent('Unable to load notifications.');
+  expect(screen.getByText('First unread notification.')).toBeInTheDocument();
+  expect(screen.getByText('Second unread notification.')).toBeInTheDocument();
+  expect(screen.getByText('Third unread notification.')).toBeInTheDocument();
+  expect(screen.queryByText('Read notification.')).not.toBeInTheDocument();
+  expect(screen.queryByText('Fourth unread notification.')).not.toBeInTheDocument();
+  expect(screen.getAllByText('Unread')).toHaveLength(3);
+});
+
+test('renders an empty message when there are no unread notifications', () => {
+  vi.mocked(useNotifications).mockReturnValue({
+    notificationState: {
+      status: 'success',
+      data: [{ id: 'notification-1', message: 'Read notification.', unread: false }],
+    },
+    unreadCount: 0,
+    markAsRead: vi.fn(),
+  });
+
+  render(<Notifications />);
+
+  expect(screen.getByText('No unread notifications.')).toBeInTheDocument();
+  expect(screen.queryByText('Read notification.')).not.toBeInTheDocument();
+});
+
+test('renders an error message when notifications fail to load', () => {
+  vi.mocked(useNotifications).mockReturnValue({
+    notificationState: { status: 'error', error: new Error('Notification service failed') },
+    unreadCount: 0,
+    markAsRead: vi.fn(),
+  });
+
+  render(<Notifications />);
+
+  expect(screen.getByRole('alert')).toHaveTextContent('Unable to load notifications.');
 });
