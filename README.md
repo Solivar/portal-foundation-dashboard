@@ -1,21 +1,71 @@
 # Portal Foundation Dashboard
 
+## Setup
+
+### Prerequisites
+
+- Node.js `v22.18.0` (recommended)
+- npm `11.17.0` (recommended)
+
+### Setup and running
+
+Install the dependencies and start the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+Vite prints the local application URL in the terminal, typically
+`http://localhost:5173`.
+
+To build and preview the production bundle locally:
+
+```bash
+npm run build
+npm run preview
+```
+
+### Checks
+
+Run the project checks with:
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+npm run format:check
+```
+
+If the formatting check reports issues, fix them with:
+
+```bash
+npm run format
+```
+
 ## Design Tokens & Brand Adherence
 
-Design tokens from the provided JSON are carried into `src/styles` as CSS custom
-properties. `src/main.tsx` imports `src/index.scss`, which loads the token
-entrypoint with `@use './styles/tokens'`.
+The provided `atea-tokens-example-v2.json` is split into two SCSS files and
+exposed as CSS custom properties:
 
-- The JSON `primitives` section maps to `_primitives.scss`.
-- The JSON `semantics` section maps to `_semantics.scss`.
-- `_tokens.scss` loads both files as the token entrypoint.
+- The JSON `primitives` object maps to `_primitives.scss`.
+- The JSON `semantics` object maps to `_semantics.scss`.
+- `_tokens.scss` is the shared token entrypoint loaded by
+  `src/styles/global.scss`.
 
-Spacing, radius, and typography tokens use `rem` to support resizable text and
-UI elements.
+Numeric spacing, radius, focus, and typography values from the JSON were
+converted to `rem` where appropriate so that text and interface elements scale
+with the user's root font-size preference. Components consume semantic tokens
+rather than depending directly on raw color values.
 
-The layout grid from the design system is represented by the reusable `Grid`
-component in `src/components/ui/Grid`. It uses a 12-column foundation with the
-shared spacing tokens for column gaps and supports the documented `Col-12`,
-`Col-6`, and `Col-4` patterns through constrained `span` values. Grid items
-stack full-width on small screens and apply their documented column spans from
-the shared `md` breakpoint upward.
+### Atea design guidelines
+
+Elevation, grid, and iconography follow the
+[Atea Design Foundations](https://design.atea.com/foundations/) documentation:
+
+- **Elevation:** Five shadow levels. Cards use level 1; search and notification
+  panels use level 4.
+- **Grid:** A responsive 12-column grid with token-based gutters and 12, 6, and
+  4-column spans. Items stack on small screens.
+- **Iconography:** Reusable 24 × 24 inline SVGs inherit `currentColor`.
+  Decorative icons are hidden from assistive technology.
