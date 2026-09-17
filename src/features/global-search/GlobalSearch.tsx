@@ -3,6 +3,7 @@ import {
   type FocusEvent,
   type KeyboardEvent,
   type SubmitEvent,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -16,9 +17,24 @@ import styles from './GlobalSearch.module.scss';
 export function GlobalSearch() {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const searchRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsId = useId();
   const state = useGlobalSearch(query);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (!searchRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [isOpen]);
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,7 +54,9 @@ export function GlobalSearch() {
   }
 
   function handleBlur(event: FocusEvent<HTMLFormElement>) {
-    if (!event.currentTarget.contains(event.relatedTarget)) {
+    const nextTarget = event.relatedTarget;
+
+    if (nextTarget instanceof Node && !event.currentTarget.contains(nextTarget)) {
       setIsOpen(false);
     }
   }
@@ -51,6 +69,7 @@ export function GlobalSearch() {
       onFocus={() => setIsOpen(true)}
       onKeyDown={handleKeyDown}
       onSubmit={handleSubmit}
+      ref={searchRef}
     >
       <div className={styles.inputWrapper}>
         <input
@@ -76,7 +95,7 @@ export function GlobalSearch() {
           id={resultsId}
         >
           {state.status === 'idle' && (
-            <p className={styles.statusMessage}>Search products, articles, and tickets.</p>
+            <p className={styles.statusMessage}>Start typing and results will appear here.</p>
           )}
           {state.status === 'loading' && <p className={styles.statusMessage}>Searching...</p>}
           {state.status === 'error' && (

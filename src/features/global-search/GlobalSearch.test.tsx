@@ -182,11 +182,31 @@ describe('panel visibility', () => {
     focusSearch();
 
     expect(screen.getByRole('region', { name: 'Search results' })).toHaveTextContent(
-      'Search products, articles, and tickets.',
+      'Start typing and results will appear here.',
     );
   });
 
-  test('closes the panel when focus leaves the search', () => {
+  test('closes the panel when the user clicks outside the search', () => {
+    render(
+      <>
+        <GlobalSearch />
+        <button type="button">Outside control</button>
+      </>,
+    );
+
+    focusSearch();
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+
+    fireEvent.pointerDown(screen.getByRole('button', { name: 'Outside control' }));
+
+    expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
+    expect(searchProducts).not.toHaveBeenCalled();
+    expect(searchKnowledgeArticles).not.toHaveBeenCalled();
+    expect(searchTickets).not.toHaveBeenCalled();
+  });
+
+  test('closes the panel when keyboard focus moves outside the search', () => {
     render(
       <>
         <GlobalSearch />
@@ -195,17 +215,39 @@ describe('panel visibility', () => {
     );
 
     const input = focusSearch();
+    const outsideControl = screen.getByRole('button', { name: 'Outside control' });
 
-    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
-
-    fireEvent.blur(input, {
-      relatedTarget: screen.getByRole('button', { name: 'Outside control' }),
-    });
+    fireEvent.blur(input, { relatedTarget: outsideControl });
 
     expect(screen.queryByRole('region', { name: 'Search results' })).not.toBeInTheDocument();
-    expect(searchProducts).not.toHaveBeenCalled();
-    expect(searchKnowledgeArticles).not.toHaveBeenCalled();
-    expect(searchTickets).not.toHaveBeenCalled();
+  });
+
+  test('keeps the panel open when blur has no next focus target', () => {
+    render(<GlobalSearch />);
+    const input = focusSearch();
+
+    fireEvent.blur(input, { relatedTarget: null });
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
+  });
+
+  test('keeps the panel open when the user presses a search result', async () => {
+    vi.mocked(searchProducts).mockResolvedValue([
+      { id: 'PRD-1002', name: 'Cloud Backup Essentials', category: 'Cloud services' },
+    ]);
+    vi.mocked(searchKnowledgeArticles).mockResolvedValue([]);
+    vi.mocked(searchTickets).mockResolvedValue([]);
+    render(<GlobalSearch />);
+
+    focusSearch();
+    typeSearch('cloud');
+    advanceDebounce();
+    vi.useRealTimers();
+
+    const result = await screen.findByText('Cloud Backup Essentials');
+    fireEvent.pointerDown(result);
+
+    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument();
   });
 });
 
