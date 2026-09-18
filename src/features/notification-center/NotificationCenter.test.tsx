@@ -100,12 +100,12 @@ test('switches between all notifications and unread notifications', () => {
   render(<NotificationCenter />);
   openPanel();
 
-  fireEvent.click(screen.getByRole('button', { name: 'Show unread' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Unread Only' }));
 
   expect(screen.getByText('Unread notification.')).toBeInTheDocument();
   expect(screen.queryByText('Read notification.')).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('button', { name: 'Show all' }));
+  fireEvent.click(screen.getByRole('button', { name: 'All Notifications' }));
 
   expect(screen.getByText('Read notification.')).toBeInTheDocument();
 });

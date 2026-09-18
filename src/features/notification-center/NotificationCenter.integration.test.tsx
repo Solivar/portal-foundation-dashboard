@@ -26,7 +26,7 @@ test('removes a notification from the unread-only view after marking it as read'
 
   const trigger = await screen.findByRole('button', { name: 'Notifications, 1 unread' });
   fireEvent.click(trigger);
-  fireEvent.click(screen.getByRole('button', { name: 'Show unread' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Unread Only' }));
 
   expect(screen.getByText('Unread notification.')).toBeInTheDocument();
   expect(screen.queryByText('Read notification.')).not.toBeInTheDocument();
