@@ -69,3 +69,15 @@ Elevation, grid, and iconography follow the
   4-column spans. Items stack on small screens.
 - **Iconography:** Reusable 24 × 24 inline SVGs inherit `currentColor`.
   Decorative icons are hidden from assistive technology.
+
+### Accessibility
+
+The interface supports keyboard and assistive-technology users:
+
+- `Tab` and `Shift+Tab` navigate interactive elements in logical document
+  order.
+- Keyboard focus is indicated by a consistent `:focus-visible` outline using
+  the provided design tokens.
+- A skip link allows keyboard users to move directly to the main dashboard
+  content.
+- `Escape` button closes the global search results and notification panel.
