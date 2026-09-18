@@ -44,7 +44,9 @@ export function NotificationCenterPanel({
         </button>
       </div>
       <div className={styles.panelControls}>
-        <Button onClick={onToggleFilter}>{showUnreadOnly ? 'Show all' : 'Show unread'}</Button>
+        <Button onClick={onToggleFilter}>
+          {showUnreadOnly ? 'All Notifications' : 'Unread Only'}
+        </Button>
       </div>
       {notificationState.status === 'loading' && (
         <p className={styles.statusMessage}>Loading notifications...</p>
