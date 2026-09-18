@@ -9,6 +9,14 @@
 
 ### Setup and running
 
+Clone the repository and use the `main` branch:
+
+```bash
+git clone https://github.com/Solivar/portal-foundation-dashboard.git
+cd portal-foundation-dashboard
+git switch main
+```
+
 Install the dependencies and start the development server:
 
 ```bash
@@ -80,4 +88,4 @@ The interface supports keyboard and assistive-technology users:
   the provided design tokens.
 - A skip link allows keyboard users to move directly to the main dashboard
   content.
-- `Escape` button closes the global search results and notification panel.
+- The `Escape` key closes the global search results and notification panel.
